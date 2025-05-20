@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Te Amo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 3 / 4;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    .carousel img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .carousel img.active {
+      opacity: 1;
+    }
+
+    .coracao {
+      position: absolute;
+      font-size: 30px;
+      user-select: none;
+      animation-name: cair;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      opacity: 0.9;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes cair {
+      0% {
+        top: -50px;
+        transform: rotate(0deg);
+      }
+      100% {
+        top: 100vh;
+        transform: rotate(360deg);
+      }
+    }
+
+    .mensagem {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      z-index: 10;
+      user-select: none;
+    }
+
+    #btnSom {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 100;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #e91e63;
+      color: white;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #btnSom:hover {
+      background-color: #ad1457;
+    }
+  </style>
+</head>
+<body>
+  <!-- Video oculto que toca autoplay mutado -->
+  <video id="videoAudio" autoplay loop playsinline muted style="display:none;">
+    <source src="seu-video.mp4" type="video/mp4" />
+    Seu navegador não suporta vídeo.
+  </video>
+
+  <button id="btnSom">Ativar áudio</button>
+
+  <div class="container">
+    <h1>Te amo</h1>
+
+    <div class="carousel" id="carousel">
+      <img src="01.jpg" class="active" />
+      <img src="02.jpg" />
+      <img src="03.jpg" />
+      <img src="04.jpg" />
+      <img src="05.jpg" />
+      <img src="06.jpg" />
+      <img src="07.jpg" />
+    </div>
+  </div>
+
+  <div class="mensagem" id="contador"></div>
+
+  <script>
+    // Função para criar corações caindo
+    function criarCoracao() {
+      for (let i = 0; i < 7; i++) {
+        const coracao = document.createElement('div');
+        coracao.classList.add('coracao');
+        coracao.style.left = Math.random() * 100 + 'vw';
+        coracao.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        coracao.textContent = '❤️';
+        document.body.appendChild(coracao);
+
+        setTimeout(() => {
+          coracao.remove();
+        }, 6000);
+      }
+    }
+
+    setInterval(criarCoracao, 500);
+
+    // Função para atualizar o contador de tempo
+    function atualizarContador() {
+      const inicio = new Date('2024-05-20T00:00:00');
+      const agora = new Date();
+      let diff = agora - inicio;
+
+      if (diff < 0) {
+        document.getElementById('contador').textContent = "Data de início futura!";
+        return;
+      }
+
+      const segundosTotais = Math.floor(diff / 1000);
+      const dias = Math.floor(segundosTotais / 86400);
+      const horas = Math.floor((segundosTotais % 86400) / 3600);
+      const minutos = Math.floor((segundosTotais % 3600) / 60);
+      const segundos = segundosTotais % 60;
+
+      document.getElementById('contador').textContent =
+        `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+    }
+
+    atualizarContador();
+    setInterval(atualizarContador, 1000);
+
+    // Carrossel automático
+    const imagens = document.querySelectorAll('.carousel img');
+    let indiceAtual = 0;
+
+    setInterval(() => {
+      imagens[indiceAtual].classList.remove('active');
+      indiceAtual = (indiceAtual + 1) % imagens.length;
+      imagens[indiceAtual].classList.add('active');
+    }, 3000);
+
+    // Botão para ativar o som do vídeo
+    const video = document.getElementById('videoAudio');
+    const btnSom = document.getElementById('btnSom');
+
+    btnSom.addEventListener('click', () => {
+      video.muted = false;
+      video.play();
+      btnSom.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
