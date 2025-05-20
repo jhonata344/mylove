@@ -3,16 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
   <title>Te Amo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
       background: #000;
       color: white;
       font-family: sans-serif;
-      overflow: hidden;
-      position: relative;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: auto;
     }
 
     .container {
@@ -20,11 +27,12 @@
       padding: 20px;
       position: relative;
       z-index: 1;
+      max-width: 100vw;
     }
 
     .carousel {
       position: relative;
-      width: 100%;
+      width: 90vw;
       max-width: 300px;
       aspect-ratio: 3 / 4;
       margin: 0 auto;
@@ -72,15 +80,13 @@
 
     .mensagem {
       font-size: 1.2em;
-      padding: 10px 20px;
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 15px;
       background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
       border-radius: 10px;
-      z-index: 10;
-      user-select: none;
+      display: inline-block;
+      max-width: 95vw;
+      word-wrap: break-word;
     }
 
     #btnSom {
@@ -102,10 +108,40 @@
     #btnSom:hover {
       background-color: #ad1457;
     }
+
+    .container p {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6em;
+      margin-top: 20px;
+      line-height: 1.5;
+      padding: 0 10px;
+      max-width: 95vw;
+      word-break: break-word;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+
+      .container p {
+        font-size: 1.3em;
+        padding: 0 5px;
+      }
+
+      .mensagem {
+        font-size: 1em;
+        padding: 8px 12px;
+      }
+
+      #btnSom {
+        font-size: 0.9em;
+        padding: 8px 12px;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Video oculto que toca autoplay mutado -->
   <video id="videoAudio" autoplay loop playsinline muted style="display:none;">
     <source src="seu-video.mp4" type="video/mp4" />
     Seu navegador não suporta vídeo.
@@ -125,13 +161,13 @@
       <img src="06.jpg" />
       <img src="07.jpg" />
     </div>
-    <p>Só para lembrar que te amo muito e que você é especial em minha vida, esse ultimo ano foi o melhor ano, mesmo diante de lutas e problemas foi um ano incrivel!</p>
+
+    <p>Só para lembrar que te amo muito e que você é especial em minha vida. Esse último ano foi o melhor, mesmo diante de lutas e problemas. Foi um ano incrível!</p>
+
+    <div class="mensagem" id="contador"></div>
   </div>
 
-  <div class="mensagem" id="contador"></div>
-
   <script>
-    // Função para criar corações caindo
     function criarCoracao() {
       for (let i = 0; i < 7; i++) {
         const coracao = document.createElement('div');
@@ -140,7 +176,6 @@
         coracao.style.animationDuration = (Math.random() * 3 + 3) + 's';
         coracao.textContent = '❤️';
         document.body.appendChild(coracao);
-
         setTimeout(() => {
           coracao.remove();
         }, 6000);
@@ -149,7 +184,6 @@
 
     setInterval(criarCoracao, 500);
 
-    // Função para atualizar o contador de tempo
     function atualizarContador() {
       const inicio = new Date('2024-05-20T00:00:00');
       const agora = new Date();
@@ -173,7 +207,6 @@
     atualizarContador();
     setInterval(atualizarContador, 1000);
 
-    // Carrossel automático
     const imagens = document.querySelectorAll('.carousel img');
     let indiceAtual = 0;
 
@@ -183,7 +216,6 @@
       imagens[indiceAtual].classList.add('active');
     }, 3000);
 
-    // Botão para ativar o som do vídeo
     const video = document.getElementById('videoAudio');
     const btnSom = document.getElementById('btnSom');
 
