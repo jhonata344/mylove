@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo da Forca - Eu Te Amo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffe4ec, #ffd6ea);
+      color: #880e4f;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ad1457;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #6a1b4d;
+    }
+
+    .palavra {
+      font-size: 2.5rem;
+      letter-spacing: 15px;
+      margin: 2rem 0;
+      color: #d81b60;
+    }
+
+    .letras {
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    .letras button {
+      margin: 6px;
+      font-size: 1rem;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      background-color: #f8bbd0;
+      color: #880e4f;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .letras button:hover:not(:disabled) {
+      background-color: #f48fb1;
+    }
+
+    .letras button:disabled {
+      background-color: #f3e5f5;
+      color: #c2185b;
+      cursor: not-allowed;
+    }
+
+    #mensagem {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #d81b60;
+      margin: 1.5rem 0;
+    }
+
+    #botaoFinal {
+      display: none;
+      margin-top: 2rem;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      background: #ec407a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+
+    #botaoFinal:hover {
+      background: #d81b60;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Jogo da Forca 💖</h1>
+  <p>Adivinhe a frase secreta:</p>
+  <div class="palavra" id="palavraOculta"></div>
+  <div class="letras" id="botoesLetras"></div>
+  <div id="mensagem"></div>
+  <a id="botaoFinal" href="https://jhonata344.github.io/mylove/index.html" target="_blank">💌 Ir para o próximo passo 💌</a>
+
+  <script>
+    const frase = "EU TE AMO";
+    const letrasUsadas = [];
+    let progresso = frase.split('').map(char => char === ' ' ? ' ' : '_');
+
+    const exibirPalavra = () => {
+      document.getElementById("palavraOculta").textContent = progresso.join(' ');
+    };
+
+    const verificarLetra = (letra) => {
+      letrasUsadas.push(letra);
+      let acertou = false;
+
+      frase.split('').forEach((char, i) => {
+        if (char === letra) {
+          progresso[i] = letra;
+          acertou = true;
+        }
+      });
+
+      document.querySelectorAll('button').forEach(btn => {
+        if (btn.textContent === letra) btn.disabled = true;
+      });
+
+      exibirPalavra();
+
+      if (!progresso.includes('_')) {
+        document.getElementById("mensagem").textContent = "🎉 Parabéns! Você descobriu a mensagem! 🎉";
+        document.getElementById("botaoFinal").style.display = "inline-block";
+      }
+    };
+
+    const criarBotoes = () => {
+      const container = document.getElementById("botoesLetras");
+      const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      alfabeto.split('').forEach(letra => {
+        const btn = document.createElement("button");
+        btn.textContent = letra;
+        btn.onclick = () => verificarLetra(letra);
+        container.appendChild(btn);
+      });
+    };
+
+    criarBotoes();
+    exibirPalavra();
+  </script>
+</body>
+</html>
